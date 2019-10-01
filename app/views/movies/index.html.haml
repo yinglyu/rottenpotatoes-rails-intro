@@ -5,8 +5,8 @@
   Include:
   - @all_ratings.each do |rating|
     = rating
-    = check_box_tag "ratings[#{rating}]", rating, session[:ratings].include?(rating)
-    -# = check_box_tag "ratings[#{rating}]", rating, if session[:ratings]; session[:ratings].include?(rating) end
+    = check_box_tag "ratings[#{rating}]", rating, @ratings.include?(rating)
+
   = submit_tag 'Refresh', :class => 'btn btn-primary', :id => 'ratings_submit'
   
 %table#movies.table.table-striped.col-md-12
