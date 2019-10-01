@@ -12,8 +12,15 @@ class MoviesController < ApplicationController
 
   def index
     @sort = params[:sort]
-    @movies = Movie.all
-    @movies = Movie.order @sort
+    @all_ratings = ['G','PG','PG-13','R','NC-17']
+    #@movies = Movie.all
+    @ratings = params[:ratings]
+    if @ratings
+      @movies = Movie.with_ratings(@ratings.keys).order @sort # a class-level method in the model
+      #go in the model rather than exposing details of the schema to the controller
+    else
+      @movies = Movie.order @sort
+    end
     
     
   end
