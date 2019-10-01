@@ -11,11 +11,17 @@ class MoviesController < ApplicationController
   end
 
   def index
-    @sort = params[:sort]
+
     @all_ratings = Movie.all_ratings # controller sets this variable by consulting the Model
-    #@movies = Movie.all
-    if params[:ratings]
-      @ratings = params[:ratings].keys
+    @sort = params[:sort] || session[:sort] 
+    if !params[:sort].nil?
+      session[:sort] = params[:sort]
+    end
+    if !params[:ratings].nil? #If a user unchecks all checkboxes, use the settings stored in the session[] hash
+      session[:ratings] = params[:ratings] #new settings should be remembered in the session
+    end
+    if session[:ratings]
+      @ratings = session[:ratings].keys
     else
       @ratings = @all_ratings
     end
