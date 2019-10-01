@@ -11,10 +11,17 @@ class MoviesController < ApplicationController
   end
 
   def index
-    @sort = params[:sort]
+    @sort = params[:sort] || session[:sort] 
+    if !params[:sort].nil?
+      session[:sort] = params[:sort]
+    end
+    
     @all_ratings = ['G','PG','PG-13','R','NC-17']
-    #@movies = Movie.all
-    @ratings = params[:ratings]
+    @ratings = params[:ratings] || session[:ratings]
+    if !params[:ratings].nil? #If a user unchecks all checkboxes, use the settings stored in the session[] hash
+      session[:ratings] = params[:ratings] #new settings should be remembered in the session
+    end
+    
     if @ratings
       @movies = Movie.with_ratings(@ratings.keys).order @sort # a class-level method in the model
       #go in the model rather than exposing details of the schema to the controller
