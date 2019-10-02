@@ -22,9 +22,9 @@ class MoviesController < ApplicationController
     @movies = Movie.with_ratings(@ratings.keys).order @sort # a class-level method in the model
     #go in the model rather than exposing details of the schema to the controller
     
-    # if params[:ratings].nil? || params[:sort].nil?
-    #   redirect_to :ratings => @ratings, :sort => @sort #when params is 
-    # end
+    if params[:ratings].nil? 
+      redirect_to :ratings => @ratings, :sort => @sort #when params is 
+    end
   end
 
   def new
