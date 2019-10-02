@@ -42,7 +42,8 @@ group :development, :test do
   gem 'guard-rspec'
   
   # Use sqlite3 as the database for Active Record
-  gem 'sqlite3'
+  # gem 'sqlite3' #ying_comment
+  gem 'pg', '~> 0.21' #ying_comment change database for heroku
 
   # Access an IRB console on exception pages or by using <%= console %> in views
   gem 'web-console', '~> 2.0'
