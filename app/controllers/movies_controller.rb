@@ -14,27 +14,17 @@ class MoviesController < ApplicationController
     #session !nil params nil then redirect_to action: :sort=> , :ratings=>
     @all_ratings = Movie.all_ratings # controller sets this variable by consulting the Model
     @sort = params[:sort] || session[:sort] 
-    if !params[:sort].nil?
-      session[:sort] = params[:sort]
-    end
-    if !params[:ratings].nil? #If a user unchecks all checkboxes, use the settings stored in the session[] hash
-      session[:ratings] = params[:ratings] #new settings should be remembered in the session
-    end
-    if session[:ratings]
-      @ratings = session[:ratings]
-    else
-      @ratings = Hash[@all_ratings.collect { |item| [item, 1] } ]#array map to hash
-    end
+    @ratings = params[:ratings] || session[:ratings]
+    @ratings ||= Hash[@all_ratings.collect { |item| [item, 1] } ]#array map to hash
+    session[:sort] = @sort
+    session[:ratings] = @ratings 
     
     @movies = Movie.with_ratings(@ratings.keys).order @sort # a class-level method in the model
     #go in the model rather than exposing details of the schema to the controller
     
-    if session[:ratings] != params[:ratings] || session[:sort] != params[:sort]
-      redirect_to :ratings => @ratings, :sort => @sort
+    if params[:ratings].nil? || params[:sort].nil?
+      redirect_to :ratings => @ratings, :sort => @sort #when params is 
     end
-    
-    
-    
   end
 
   def new
